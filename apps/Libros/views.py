@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import libro
+from .models import libro,copy,publication
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
 
-from .serializers import libroSerializer
+from .serializers import libroSerializer,copySerializer,publicacionSerializer,copyBasicSerializer
 
 # Create your views here.
 
@@ -40,3 +40,29 @@ class libroViewSet(viewsets.ModelViewSet):
     
     serializer_class = libroSerializer
     queryset = libro.objects.all()
+    
+
+class copyViewSet(viewsets.ModelViewSet):
+    
+    serializer_class = copySerializer
+    queryset = copy.objects.all()
+    
+    def get_serializer_class(self):
+        if self.action == "list":
+            params = self.request.query_params
+            
+            if params.get("basic"):
+                return copyBasicSerializer
+            
+        if self.action == "create":
+            params = self.request.query_params
+            
+            if params.get("basic"):
+                return copyBasicSerializer
+            
+        return super().get_serializer_class()
+
+class publicationViewSet(viewsets.ModelViewSet):
+    
+    serializer_class = publicacionSerializer
+    queryset = publication.objects.all()

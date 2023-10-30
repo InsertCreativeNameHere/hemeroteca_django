@@ -5,7 +5,9 @@ from . import views
 
 router = DefaultRouter()
 
-router.register(r'', views.libroViewSet, basename='libros')
+router.register(r'libros', views.libroViewSet, basename='libros')
+router.register(r'copias', views.copyViewSet, basename='copies')
+router.register(r'publicaciones', views.publicationViewSet, basename='publications')
 
 urlpatterns = [
 ]
