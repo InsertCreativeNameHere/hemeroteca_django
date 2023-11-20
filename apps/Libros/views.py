@@ -8,42 +8,40 @@ from rest_framework import viewsets
 
 from .serializers import libroSerializer,copySerializer,publicacionSerializer,copyBasicSerializer
 
+from rest_framework.permissions import IsAuthenticated, BasePermission
+
+class lectorPermision(BasePermission):
+    def has_permission(self, request, view):
+        if view.action == "list": return  request.user.rol == 3
+
+class TokenPermision(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
+class InventarioPermision(BasePermission):
+    def has_permission(self, request, view):
+        if view.action == "create": return  request.user.rol == 2
+        if view.action == "update": return  request.user.rol == 2
+        if view.action == "list": return  request.user.rol == 2
+        if view.action == "partial_update": return  request.user.rol == 2
+
+class AdminPermision(BasePermission):
+    def has_permission(self, request, view):
+        return  request.user.rol == 4
+
+
 # Create your views here.
 
-def librosIndex(request):
-    return HttpResponse("<h1> Hola desde la app de Libros <h1>")
-
-class librosApiView(APIView):
-    
-    def get(self,request,*args,**kwargs):
-        
-        _libros = libro.objects.all()
-        data_response = [{"titulo" : libro.titulo,
-                          "tipo" : libro.tipo,
-                          "fecha de publicacion" : libro.fecha_publicacion,
-                          "Editorial" : libro.editorial,
-                          } for libro in _libros]
-        return Response(data_response)
-    
-    
-    def post(self,request,*args,**kwargs):
-        
-        data = request.data 
-        
-        _libro = libro(titulo = data.get("titulo"), tipo = data.get("tipo"), fecha_publicacion = data.get("fecha"), editorial= data.get("editorial"))
-        _libro.save()
-        
-        return Response({'message' : "Libro creado"})
-    
 
 class libroViewSet(viewsets.ModelViewSet):
     
+    permission_classes = [ TokenPermision,InventarioPermision | AdminPermision | lectorPermision]
     serializer_class = libroSerializer
     queryset = libro.objects.all()
     
 
 class copyViewSet(viewsets.ModelViewSet):
-    
+    permission_classes = [ TokenPermision,InventarioPermision | AdminPermision]
     serializer_class = copySerializer
     queryset = copy.objects.all()
     
@@ -63,6 +61,6 @@ class copyViewSet(viewsets.ModelViewSet):
         return super().get_serializer_class()
 
 class publicationViewSet(viewsets.ModelViewSet):
-    
+    permission_classes = [ TokenPermision,InventarioPermision | AdminPermision]
     serializer_class = publicacionSerializer
     queryset = publication.objects.all()

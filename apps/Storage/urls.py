@@ -5,8 +5,8 @@ from . import views
 
 router = DefaultRouter()
 
-router.register(r'loans', views.loanViewSet, basename='loans'),
-router.register(r'debts', views.debtViewSet, basename='debts')
+router.register(r'secciones', views.EstanteViewSet, basename='secciones'),
+router.register(r'estantes', views.SeccionViewSet, basename='estantes')
 
 urlpatterns = [
 ]

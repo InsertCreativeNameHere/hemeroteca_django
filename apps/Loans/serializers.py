@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import loan
+from .models import loan,Debt
 
 class loanSerializer(serializers.ModelSerializer):
     
@@ -17,3 +17,9 @@ class loanSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Copia no disponible")
         
         return super().is_valid(raise_exception=raise_exception)
+
+class debtSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Debt
+        fields = '__all__'

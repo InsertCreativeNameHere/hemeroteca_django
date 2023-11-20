@@ -1,5 +1,6 @@
 from django.db import models
 from apps.Users.models import author
+from apps.Storage.models import Seccion
 
 # Create your models here.
 
@@ -18,7 +19,7 @@ class libro(models.Model):
 class copy(models.Model):
     state = models.CharField(max_length=50)
     libro = models.ForeignKey(libro,on_delete=models.DO_NOTHING,null=False,blank=False)
-    ubication = models.CharField(max_length=50)
+    ubication = models.ForeignKey(Seccion,on_delete=models.DO_NOTHING)
 
 class publication(models.Model):
     date = models.DateField()
