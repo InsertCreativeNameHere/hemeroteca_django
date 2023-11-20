@@ -1,34 +1,30 @@
-# Hemeroteca - DJango
-Creación de una API simple utilizando el framework Django para Python. Esta API soporta las siguientes funcionalidades en las rutas:
+Hemeroteca - Django
+Este repositorio contiene una implementación de una API simple utilizando el framework Django para Python. La API utiliza autenticación mediante tokens JWT, los cuales se pueden obtener realizando una petición POST a las siguientes direcciones:
 
-- /libros:
+- /api/token/ Obtiene un token de autenticación.
+- /api/token/refresh/ Refresca un token existente.
+Para obtener un token de autenticación, es necesario proporcionar las credenciales de un usuario válido. En caso de no contar con un usuario válido, se puede utilizar el Administrador por defecto:
 
-Dependiendo del método de la petición se ejecuta una funcionalidad:
+- Email: javier.aponte@hotmail.es
+- Contraseña: 123456
+Si se desea registrar un nuevo usuario, se puede realizar una petición POST a la siguiente dirección (sin autenticación requerida):
 
-- GET: Imprime los registros almacenados de libros almacenados en la base de datos
+/users/sign-up/
+Al registrar un nuevo usuario, se deberá asignar un rol, cada uno con sus respectivos permisos:
 
-- POST: Almacena los registros entregados en el cuerpo de la petición. Esta se debe hacer un formato JSON teniendo en cuenta la siguiente plantilla:
+- Recepción: Usuario encargado de la gestión de préstamos y deudas de la hemeroteca. Acceso al componente loans y posibilidad de listar información de módulos, libros, almacenamiento y autores.
 
-{
-    "titulo": "Mil años de soledad",
-    "tipo":"Novela",
-    "fecha": "1967-05-01",
-    "editorial": "Sudamericana"
-}
+- Inventarios: Usuario encargado de la gestión de inventarios de la hemeroteca. Acceso a los módulos de almacenamiento y libros.
 
-- Ademas de esto la API soporta los metodos PUT y PATCH
+- Lector: Usuario promedio de la aplicación con acceso para listar libros y autores.
 
-- /areas:
+- Administrador: Control total de la aplicación, con acceso a todos los módulos.
 
-Dependiendo del método de la petición se ejecuta una funcionalidad:
+Por motivos de seguridad, ningún rol tiene permisos para eliminar información, esta tarea queda reservada para el administrador.
 
-- GET: Imprime los registros almacenados las areas almacenados en la base de datos
+La API cuenta con un sistema de multas en caso de retraso en la devolución de una copia de un libro prestada. Esta deuda (Debt) se calcula con base en la cantidad de días desde el fin del plazo de entrega hasta el día de entrega multiplicado por 5000.
 
-- POST: Almacena los registros entregados en el cuerpo de la petición. Esta se debe hacer un formato JSON teniendo en cuenta la siguiente plantilla:
+Para acceder a documentación adicional o ver en detalle todos los endpoints de la API, puedes visitar la documentación generada por Swagger en las siguientes direcciones:
 
-{
-    "nombre": "Libto",
-    "descipcion":"loram",
-}
-
-- Ademas de esto la API soporta los metodos PUT y PATCH
+- /swagger/
+- /redoc/

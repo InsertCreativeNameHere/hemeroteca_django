@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated, BasePermission
 
 class lectorPermision(BasePermission):
     def has_permission(self, request, view):
-        if view.action == "list": return  request.user.rol == 3
+        if view.action == "list": return  request.user.rol == 3 or request.user.rol == 1
 
 class TokenPermision(BasePermission):
     def has_permission(self, request, view):
@@ -28,6 +28,7 @@ class InventarioPermision(BasePermission):
 class AdminPermision(BasePermission):
     def has_permission(self, request, view):
         return  request.user.rol == 4
+
 
 
 # Create your views here.
